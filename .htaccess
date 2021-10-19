@@ -1,0 +1,41 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    <Files .env>
+        Order Allow,Deny
+        Deny from all
+    </Files>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.jpeg|\.gif|robots\.txt|front\.tff|\.html|\.ico|\.woff|\.woff2|\.svg|\.mp4|\.mp4.ogv)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # AddType audio/mpeg3 .mp3
+    # AddType audio/mp3 .mp3
+    # AddType audio/x-mpeg3 .mp3
+    # AddType audio/ogg .ogg
+    # AddType audio/ogg .oga
+    # AddType video/ogg .ogv
+    # AddType video/mp4 .mp4
+    # AddType video/webm .webm
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(assets|clipart|partner|service|advice|blog|svg|testimony|vendor)/(.*)$ public/$1/$2 [L,NC]
+</IfModule>
